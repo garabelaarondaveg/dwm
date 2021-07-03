@@ -2,22 +2,22 @@
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel size of windows */
-static const unsigned int gappx     = 8;        /* gaps size between windows */
+static const unsigned int gappx     = 5;        /* gaps size between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "ubuntu mono:size=11.5", "fontawesome:size=11.5" };
-static const char dmenufont[]       = "ubuntu mono:size=11.5";
+static const char *fonts[]          = { "ubuntu:size=11", "fontawesome:size=11" };
+static const char dmenufont[]       = "ubuntu:size=11";
 //background color
 static const char col_gray1[]       = "#222222";
 //inactive window border color
 static const char col_gray2[]       = "#444444";
 //font color
-static const char col_gray3[]       = "#bbbbbb";
+static const char col_gray3[]       = "#FEFBEC";
 //current tag and current window font color
 static const char col_gray4[]       = "#eeeeee";
 //Top bar second color (blue) and active window border color
-static const char col_cyan[]        = "#27C435";
+static const char col_cyan[]        = "#505662";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -70,7 +70,7 @@ static const char *monitor[] = { "/usr/bin/htop", NULL };
 //sets st as the default terminal
 //static const char *termcmd[]  = { "st", NULL };
 //sets urxvt as the default terminal
-static const char *termcmd[]  = { "kitty", NULL };
+static const char *termcmd[]  = { "st", NULL };
 //volume controls
 static const char *upvol[]   = { "amixer", "-q", "set", "Master", "5%+", "unmute", NULL };
 static const char *downvol[] = { "amixer", "-q", "set", "Master", "5%-", "unmute", NULL };
@@ -108,9 +108,9 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	{ MODKEY,              		    XK_n,      shiftview,  	   { .i = +1 } },
 	{ MODKEY,              		    XK_b,      shiftview,      { .i = -1 } },
-    { MODKEY,                       XK_F8,     spawn,          {.v = upvol   } },
-    { MODKEY,                       XK_F7,     spawn,          {.v = downvol } },
-    { MODKEY,                       XK_F5,     spawn,          {.v = mutevol } },
+  { MODKEY,                       XK_F3,     spawn,          {.v = upvol   } },
+  { MODKEY,                       XK_F2,     spawn,          {.v = downvol } },
+  { MODKEY,                       XK_F1,     spawn,          {.v = mutevol } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
