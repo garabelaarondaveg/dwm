@@ -2,22 +2,22 @@
 
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel size of windows */
-static const unsigned int gappx     = 8;        /* gaps size between windows */
+static const unsigned int gappx     = 5;        /* gaps size between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "ubuntu:size=11", "fontawesome:size=11" };
-static const char dmenufont[]       = "ubuntu:size=11";
+static const char *fonts[]          = { "ubuntu:size=10.5", "fontawesome:size=10.5" };
+static const char dmenufont[]       = "ubuntu:size=10.5";
 //background color
-static const char col_gray1[]       = "#272727";
+static const char col_gray1[]       = "#282828";
 //inactive window border color
 static const char col_gray2[]       = "#444444";
 //font color
-static const char col_gray3[]       = "#BBBBBB";
+static const char col_gray3[]       = "#c5c6c6";
 //current tag and current window font color
-static const char col_gray4[]       = "#eeeeee";
+static const char col_gray4[]       = "#EBEBEB";
 //Top bar second color (blue) and active window border color
-static const char col_cyan[]        = "#505050";
+static const char col_cyan[]        = "#31822D";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -26,7 +26,7 @@ static const char *colors[][3]      = {
 
 /* tagging */
 //tag names (upper left)
-static const char *tags[] = { "", "", "", "", "",  "", "", "", "", "" };
+static const char *tags[] = { "", "", "", "", "", "", "" };
 
 static const Rule rules[] = {
 	/* xprop(1):
@@ -50,6 +50,13 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
+#define XF86XK_AudioLowerVolume	0x1008FF11   /* Volume control down        */
+#define XF86XK_AudioMute	0x1008FF12   /* Mute sound from the system */
+#define XF86XK_AudioRaiseVolume	0x1008FF13   /* Volume control up          */
+#define XF86XK_MonBrightnessUp   0x1008FF02  /* Monitor/panel brightness */
+#define XF86XK_MonBrightnessDown 0x1008FF03  /* Monitor/panel brightness */
+#define XF86XK_AudioMicMute	0x1008FFB2   /* Mute the Mic from the system */
+#define XF86XK_ModeLock		0x1008FF01	/* Mode Switch Lock */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
@@ -68,15 +75,20 @@ static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont,
 static const char *monitor[] = { "/usr/bin/htop", NULL };
 //sets st as the default terminal
 //static const char *termcmd[]  = { "st", NULL };
-//sets urxvt as the default terminal
-static const char *termcmd[]  = { "urxvt", NULL };
+//sets st as the default terminal
+static const char *termcmd[]  = { "st", NULL };
 //sets pcmanfm as the default filemanager
 static const char *fm[] = { "pcmanfm", NULL };
 //volume controls
 static const char *upvol[]   = { "amixer", "-q", "set", "Master", "5%+", "unmute", NULL };
 static const char *downvol[] = { "amixer", "-q", "set", "Master", "5%-", "unmute", NULL };
 static const char *mutevol[] = { "amixer", "-q", "set", "Master", "toggle", NULL };
+// My Useful applications
 static const char *browser[] = { "brave", NULL };
+static const char *emacs[] = { "emacs", NULL };
+static const char *ppsspp[] = { "PPSSPPSDL", NULL};
+static const char *brup[] = { "brightnessctl", "set", "10%+", NULL };
+static const char *brdown[] = {"brightnessctl", "set", "10%-", NULL };
 
 #include "shiftview.c"
 static char *endx[] = { "/bin/sh", "-c", "endx", "externalpipe", NULL };
@@ -85,7 +97,9 @@ static Key keys[] = {
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,	                      XK_Return, spawn,          {.v = termcmd } },
   { MODKEY,                       XK_w,      spawn,          {.v = browser } },
+  { MODKEY,                       XK_e,      spawn,          {.v = emacs } },
   { MODKEY,                       XK_f,      spawn,          {.v = fm } },
+  { MODKEY,                       XK_g,      spawn,          {.v = ppsspp } },
 	{ MODKEY,                       XK_t,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -93,9 +107,9 @@ static Key keys[] = {
 	{ MODKEY,                       XK_u,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_z,	   zoom,           {0} },
+	{ MODKEY,                       XK_z,	     zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY,	                    XK_q,      killclient,     {0} },
+	{ MODKEY,	                      XK_q,      killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY|ShiftMask,             XK_m,      setlayout,      {.v = &layouts[2]} },
@@ -110,11 +124,13 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_equal,  setgaps,        {.i = 0  } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	{ MODKEY,              		    XK_n,      shiftview,  	   { .i = +1 } },
-	{ MODKEY,              		    XK_b,      shiftview,      { .i = -1 } },
-  { MODKEY,                       XK_F8,     spawn,          {.v = upvol   } },
-  { MODKEY,                       XK_F7,     spawn,          {.v = downvol } },
-  { MODKEY,                       XK_F5,     spawn,          {.v = mutevol } },
+	{ MODKEY,              		      XK_n,      shiftview,  	   { .i = +1 } },
+	{ MODKEY,              		      XK_b,      shiftview,      { .i = -1 } },
+  { 0,                            XF86XK_AudioRaiseVolume,     spawn,          {.v = upvol   } },
+  { 0,                            XF86XK_AudioLowerVolume,     spawn,          {.v = downvol } },
+  { 0,                            XF86XK_AudioMute,     spawn,          {.v = mutevol } },
+  { 0,                            XF86XK_MonBrightnessUp,     spawn,    {.v = brup } },
+  { 0,                            XF86XK_MonBrightnessDown,     spawn,    {.v = brdown } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
