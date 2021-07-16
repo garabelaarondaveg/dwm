@@ -25,11 +25,6 @@ Add the following line to your .xinitrc to start dwm using startx:
 
     exec dwm
 
-Add wallpaper you need to install feh
-
-feh --bg-scale /path/to/file &
-exec dwm
-
 
 Configuration
 -------------
