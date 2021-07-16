@@ -9,15 +9,15 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "ubuntu:size=10.5", "fontawesome:size=10.5" };
 static const char dmenufont[]       = "ubuntu:size=10.5";
 //background color
-static const char col_gray1[]       = "#282828";
+static const char col_gray1[]       = "#272822";
 //inactive window border color
 static const char col_gray2[]       = "#444444";
 //font color
-static const char col_gray3[]       = "#c5c6c6";
+static const char col_gray3[]       = "#D0E1F5";
 //current tag and current window font color
-static const char col_gray4[]       = "#EBEBEB";
+static const char col_gray4[]       = "#1E1E1E";
 //Top bar second color (blue) and active window border color
-static const char col_cyan[]        = "#31822D";
+static const char col_cyan[]        = "#8BD649";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -71,10 +71,6 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
 //static const char *filemanager[] = { "
-//launches htop
-static const char *monitor[] = { "/usr/bin/htop", NULL };
-//sets st as the default terminal
-//static const char *termcmd[]  = { "st", NULL };
 //sets st as the default terminal
 static const char *termcmd[]  = { "st", NULL };
 //sets pcmanfm as the default filemanager
@@ -83,23 +79,31 @@ static const char *fm[] = { "pcmanfm", NULL };
 static const char *upvol[]   = { "amixer", "-q", "set", "Master", "5%+", "unmute", NULL };
 static const char *downvol[] = { "amixer", "-q", "set", "Master", "5%-", "unmute", NULL };
 static const char *mutevol[] = { "amixer", "-q", "set", "Master", "toggle", NULL };
-// My Useful applications
-static const char *browser[] = { "brave", NULL };
-static const char *emacs[] = { "emacs", NULL };
-static const char *ppsspp[] = { "PPSSPPSDL", NULL};
+// Brightness Controls
 static const char *brup[] = { "brightnessctl", "set", "10%+", NULL };
 static const char *brdown[] = {"brightnessctl", "set", "10%-", NULL };
+// My Useful applications
+static const char *browser[] = { "brave", NULL };
+static const char *ppsspp[] = { "PPSSPPSDL", NULL};
+static const char *chromium[] = { "chromium", NULL};
+// My Music Player
+static const char *ncmpcpp[] = { "st", "ncmpcpp", NULL};
+// Launch htop
+static const char *monitor[] = { "kitty", "htop", NULL};
 
 #include "shiftview.c"
+#include "movestack.c"
 static char *endx[] = { "/bin/sh", "-c", "endx", "externalpipe", NULL };
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
 	{ MODKEY,	                      XK_Return, spawn,          {.v = termcmd } },
-  { MODKEY,                       XK_w,      spawn,          {.v = browser } },
-  { MODKEY,                       XK_e,      spawn,          {.v = emacs } },
-  { MODKEY,                       XK_f,      spawn,          {.v = fm } },
-  { MODKEY,                       XK_g,      spawn,          {.v = ppsspp } },
+    { MODKEY,                       XK_w,      spawn,          {.v = browser } },
+    { MODKEY,                       XK_f,      spawn,          {.v = fm } },
+    { MODKEY,                       XK_g,      spawn,          {.v = ppsspp } },
+    { MODKEY,                       XK_c,      spawn,          {.v = chromium } },
+    { MODKEY,                       XK_m,      spawn,          {.v = ncmpcpp } },
+    { MODKEY,                       XK_x,      spawn,          {.v = monitor } },
 	{ MODKEY,                       XK_t,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -107,9 +111,11 @@ static Key keys[] = {
 	{ MODKEY,                       XK_u,      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_z,	     zoom,           {0} },
+	{ MODKEY|ShiftMask,             XK_j,      movestack,      {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_k,      movestack,      {.i = -1 } },
+	{ MODKEY,                       XK_z,	   zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY,	                      XK_q,      killclient,     {0} },
+	{ MODKEY,	                    XK_q,      killclient,     {0} },
 	{ MODKEY|ShiftMask,             XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY|ShiftMask,             XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY|ShiftMask,             XK_m,      setlayout,      {.v = &layouts[2]} },
